@@ -6,7 +6,9 @@
 
 Typing lyrics in monosyllabic languages (one syllable per character, no spaces between them, for example Chinese) has always been painful. We have to either type characters one by one and add spaces, or add spaces via an external text editor and paste the lyrics back by pressing Ctrl+V multiple times.
 
-This plugin simplifies the process.
+The [lyricsHelper](https://github.com/SnakeAmadeus/lyricsHelper) plugin somehow solves this problem, but it can only read lyrics from an external txt file, so it is probably not suitable for music composition, which may require frequently modifying the lyrics on the go.
+
+This plugin addresses these issues.
 
 ![Screenshot](readme-assets/screenshot.png)
 
@@ -31,7 +33,7 @@ For advanced usage, see the [original repo](https://github.com/bakajikara/MuseSc
 
 ### Dialog flickering when typing in MuseScore3
 
-MuseScore3's score view will grab the keyboard focus when a plugin changes the score, sending the dialog to background. There's no obvious way to prevent this, so this plugin simply brings the dialog to front again after making changes. This results in flickering. it is at least better than losing instant preview.
+MuseScore3's score view will grab the keyboard focus when a plugin changes the score, sending the dialog to background. There's no obvious way to prevent this, so this plugin have to bring the dialog to front again after making changes. This results in flickering. it is at least better than losing instant preview.
 
 ## Changes compared to bakajikara/MuseScoreLyricsJP
 

@@ -25,6 +25,7 @@ MuseScore {
     }
 
     onRun: {
+        inputDialog.visible = true;
 		lyricsInput.forceActiveFocus();
     }
 
@@ -35,7 +36,7 @@ MuseScore {
 
     Window {
         id: inputDialog
-        visible: true
+        visible: false  // prevent dialog flashing by on initialization
         title: pluginName
 
         width: 480

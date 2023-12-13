@@ -33,9 +33,11 @@ For advanced usage, see the [original repo](https://github.com/bakajikara/MuseSc
 
 ### Dialog flickering when typing in MuseScore3
 
-MuseScore3's score view will grab the keyboard focus when a plugin changes the score, sending the dialog to background. There's no obvious way to prevent this, so this plugin have to bring the dialog to front again after making changes. This results in flickering. it is at least better than losing instant preview.
+MuseScore3's score view will grab the keyboard focus when a plugin changes the score, sending the dialog to background. There's no obvious way to prevent this, so this plugin have to bring the dialog to front again after making changes. This results in flickering. It is at least better than losing instant preview.
 
 ## Changes compared to bakajikara/MuseScoreLyricsJP
 
 - Ported to MuseScore 3.
 - Translate the default language of UI into English. Chinese and Japanese are available as localization.
+- Lyrics assignment skips tied notes by default.
+- Add symbol `%` which skips over a note.

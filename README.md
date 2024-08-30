@@ -2,7 +2,7 @@
 
 <img align=right src="./EasyMonosyllabicLyrics.png" width=220px />
 
-> This is a [MuseScore](http://musescore.org/) plugin modified from [bakajikara/MuseScoreLyricsJP (日本語歌詞入力)](https://github.com/bakajikara/MuseScoreLyricsJP), ported to MuseScore 3.
+> This is a [MuseScore](http://musescore.org/) plugin modified from [bakajikara/MuseScoreLyricsJP (日本語歌詞入力)](https://github.com/bakajikara/MuseScoreLyricsJP).
 > 
 > ⚠️ **This branch works only on MuseScore 4.4 and above. If you use MuseScore ≤4.3, check the `main` branch.**
 
@@ -12,7 +12,7 @@ The [lyricsHelper](https://github.com/SnakeAmadeus/lyricsHelper) plugin somehow 
 
 This plugin addresses these issues.
 
-![Screenshot](readme-assets/screenshot.png)
+![Screenshot](readme-assets/screenshot1.png)
 
 ## Installation
 

@@ -1,183 +1,179 @@
+import QtQuick 2.1
+import QtQuick.Controls 2.15
+
 import MuseScore 3.0
-import QtQuick 2.9
-import QtQuick.Controls 2.2
-import QtQuick.Window 2.0
+import Muse.UiComponents 1.0
 
 MuseScore {
+    // From MuseScore 4.4 and on, plugin metadata is parsed statically. Using translations on those wil not be possible.
+
     property var pluginName: qsTr("Easy Monosyllabic Lyrics", "title")
 
     version: "1.0.0"
-    description: qsTr("Input Monosyllabic Lyrics easily in MuseScore", "description")
+    description: "Input Monosyllabic Lyrics easily in MuseScore"
     menuPath: "Plugins." + pluginName
+    pluginType: "dialog"
 
     requiresScore: true
 
-    // MuseScore 3 and 4 compat
-    Component.onCompleted: {
-        if (mscoreMajorVersion >= 4) {
-            title = pluginName
-            thumbnailName = "EasyMonosyllabicLyrics.png"
-            categoryCode = "lyrics"
-        }
-    }
+    // <MuseScore 4.4 Metadata>
+    title: "Easy Monosyllabic Lyrics"
+    thumbnailName: "EasyMonosyllabicLyrics.png"
+    categoryCode: "lyrics"
+    // </MuseScore 4.4 Metadata>
+
     function _quit() {
         (typeof(quit) === 'undefined' ? Qt.quit : quit)();
     }
 
     onRun: {
-        inputDialog.visible = true;
-		lyricsInput.forceActiveFocus();
+        lyricsInput.ensureActiveFocus();
     }
 
     function reacquireFocus() {
-        inputDialog.requestActivate();
-        lyricsInput.forceActiveFocus();
+        lyricsInput.ensureActiveFocus();
     }
 
-    Window {
-        id: inputDialog
-        visible: false  // prevent dialog flashing by on initialization
-        title: pluginName
+    width: 480 + 32
+    height: 80 + 32
 
-        width: 480
-        height: 80
+    Item {
+        anchors.fill: parent
+        anchors.margins: 16
+
+        TextInputField {
+            id: lyricsInput
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+
+            width: parent.width
+            height: 40
+            
+            hint: qsTr("Input here...", "Placeholder")
+
+            currentText: ""
+
+            onTextEdited: function (newText) {
+                currentText = newText;
+                curScore.startCmd();
+                var placementValue = [null, Placement.ABOVE, Placement.BELOW][placementSelector.currentIndex];
+                script.applyLyricsToScore(script.splitLyrics(currentText), verseSelector.currentValue - 1, placementValue);
+                curScore.endCmd();
+
+                reacquireFocus();
+            }
+        }
+
+        IncrementalPropertyControl {
+            id: verseSelector
+
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+
+            width: 128
+            
+            minValue: 1
+            maxValue: 999
+            step: 1
+            decimals: 0
+            measureUnitsSymbol: '.'
+
+            currentValue: 1
+
+            onValueEdited: function(value) {
+                currentValue = value;
+                curScore.startCmd();
+                script.restorePreviousLyrics();
+                var placementValue = [null, Placement.ABOVE, Placement.BELOW][placementSelector.currentIndex];
+                script.applyLyricsToScore(script.splitLyrics(lyricsInput.currentText), currentValue - 1, placementValue);
+                curScore.endCmd();
+
+                reacquireFocus();
+            }
+        }
 
         Item {
-            anchors.fill: parent
-
-            TextField {
-                id: lyricsInput
-
-                anchors.top: parent.top
-                anchors.left: parent.left
-
-                width: parent.width
-                height: 48
-
-                placeholderText: qsTr("Input here...", "Placeholder")
-                selectByMouse: true
-
-                onTextEdited: {
-                    curScore.startCmd();
-                    var currentValue = [null, Placement.ABOVE, Placement.BELOW][placementSelector.currentIndex];
-                    script.applyLyricsToScore(script.splitLyrics(text), verseSelector.value, currentValue);
-                    curScore.endCmd();
-
-                    reacquireFocus();
-                }
-            }
-
-            SpinBox {
-                id: verseSelector
-
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-
-                width: 128
-                height: 32
-
-                from: 0
-                to: 999
-
-                textFromValue: function(value, locale) { return value + 1 + "."; }
-                valueFromText: function(text, locale) { return parseInt(text) - 1; }
-
-                onValueModified: {
-                    curScore.startCmd();
-                    script.restorePreviousLyrics();
-                    var currentValue = [null, Placement.ABOVE, Placement.BELOW][placementSelector.currentIndex];
-                    script.applyLyricsToScore(script.splitLyrics(lyricsInput.text), value, currentValue);
-                    curScore.endCmd();
-
-                    reacquireFocus();
-                }
-            }
-
-            Item {
-                id: verseRight
-                
-                anchors.bottom: parent.bottom
-                anchors.left: verseSelector.right
-
-                width: 4
-            }
-
-            ComboBox {
-                id: placementSelector
-
-                anchors.bottom: parent.bottom
-                anchors.left: verseRight.right
-
-                width: 112
-                height: 32
-                
-                textRole: "text"
-
-                model: [
-                    { value: null, text: qsTr("None", "Placement") },
-                    { value: Placement.ABOVE, text: qsTr("Above", "Placement") },
-                    { value: Placement.BELOW, text: qsTr("Below", "Placement") }
-                ]
-                
-                onActivated: {
-                    var currentValue = [null, Placement.ABOVE, Placement.BELOW][currentIndex];
-                    curScore.startCmd();
-                    script.applyLyricsToScore(script.splitLyrics(lyricsInput.text), verseSelector.value, currentValue);
-                    curScore.endCmd();
-
-                    reacquireFocus();
-                }
-            }
+            id: verseRight
             
-            Button {
-                id: cancelButton
+            anchors.bottom: parent.bottom
+            anchors.left: verseSelector.right
 
-                anchors.bottom: parent.bottom
-                anchors.right: confirmLeft.left
+            width: 8
+        }
 
-                width: 80
-                height: 32
+        StyledDropdown {
+            id: placementSelector
 
-                text: qsTr("Revert", "Action")
+            anchors.bottom: parent.bottom
+            anchors.left: verseRight.right
 
-                onClicked: {
-                    curScore.startCmd();
-                    script.restorePreviousLyrics();
-                    curScore.endCmd();
-                    lyricsInput.text = "";
-                    inputDialog.close();
-                    _quit();
-                }
+            width: 112
+            
+            textRole: "text"
+            currentIndex: 0
+
+            model: [
+                { value: null, text: qsTr("None", "Placement") },
+                { value: Placement.ABOVE, text: qsTr("Above", "Placement") },
+                { value: Placement.BELOW, text: qsTr("Below", "Placement") }
+            ]
+            
+            onActivated: function(newIndex, newValue) {
+                currentIndex = newIndex
+                var placementValue = [null, Placement.ABOVE, Placement.BELOW][currentIndex];
+                curScore.startCmd();
+                script.applyLyricsToScore(script.splitLyrics(lyricsInput.currentText), verseSelector.currentValue - 1, placementValue);
+                curScore.endCmd();
+
+                reacquireFocus();
             }
+        }
+        
+        FlatButton {
+            id: cancelButton
 
-            Item {
-                id: confirmLeft
-                
-                anchors.bottom: parent.bottom
-                anchors.right: confirmButton.left
+            anchors.bottom: parent.bottom
+            anchors.right: confirmLeft.left
 
-                width: 4
+            width: 80
+            
+            text: qsTr("Revert", "Action")
+
+            onClicked: {
+                curScore.startCmd();
+                script.restorePreviousLyrics();
+                curScore.endCmd();
+                lyricsInput.currentText = "";
+                _quit();
             }
+        }
 
-            Button {
-                id: confirmButton
+        Item {
+            id: confirmLeft
+            
+            anchors.bottom: parent.bottom
+            anchors.right: confirmButton.left
 
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
+            width: 8
+        }
 
-                width: 80
-                height: 32
+        FlatButton {
+            id: confirmButton
 
-                text: qsTr("Done", "Action")
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
 
-                onClicked: {
-                    curScore.startCmd();
-                    script.confirm();
-                    curScore.endCmd();
-                    lyricsInput.text = "";
-                    inputDialog.close();
-                    _quit();
-                }
+            width: 80
+
+            text: qsTr("Done", "Action")
+
+            onClicked: {
+                curScore.startCmd();
+                script.confirm();
+                curScore.endCmd();
+                lyricsInput.currentText = "";
+                _quit();
             }
         }
     }
@@ -514,7 +510,7 @@ MuseScore {
             nextStartTick = {};
             previousLyrics = {};
             previousLargestTick = {};
-            previousVerse = verseSelector.value;
+            previousVerse = verseSelector.currentValue - 1;
         }
 
         function confirm() {

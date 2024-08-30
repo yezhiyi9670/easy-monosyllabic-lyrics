@@ -4,49 +4,48 @@
 <context>
     <name>EasyMonosyllabicLyrics</name>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="7"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="10"/>
         <source>Easy Monosyllabic Lyrics</source>
         <comment>title</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="10"/>
         <source>Input Monosyllabic Lyrics easily in MuseScore</source>
         <comment>description</comment>
-        <translation>在 MuseScore 中轻松输入单音节歌词（汉语、日语等）</translation>
+        <translation type="vanished">在 MuseScore 中轻松输入单音节歌词（汉语、日语等）</translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="56"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="53"/>
         <source>Input here...</source>
         <comment>Placeholder</comment>
         <translation>在此处输入...</translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="116"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="117"/>
         <source>None</source>
         <comment>Placement</comment>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="117"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="118"/>
         <source>Above</source>
         <comment>Placement</comment>
         <translation>上方</translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="118"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="119"/>
         <source>Below</source>
         <comment>Placement</comment>
         <translation>下方</translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="140"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="141"/>
         <source>Revert</source>
         <comment>Action</comment>
         <translation>放弃</translation>
     </message>
     <message>
-        <location filename="../EasyMonosyllabicLyrics.qml" line="170"/>
+        <location filename="../EasyMonosyllabicLyrics.qml" line="169"/>
         <source>Done</source>
         <comment>Action</comment>
         <translation>完成</translation>

@@ -3,6 +3,8 @@
 <img align=right src="./EasyMonosyllabicLyrics.png" width=220px />
 
 > This is a [MuseScore](http://musescore.org/) plugin modified from [bakajikara/MuseScoreLyricsJP (日本語歌詞入力)](https://github.com/bakajikara/MuseScoreLyricsJP), ported to MuseScore 3.
+>
+> ⚠️ **This branch works only on MuseScore ≤4.3. Check the `mu4.4` branch for MuseScore 4.4 and above.**
 
 Typing lyrics in monosyllabic languages (one syllable per character, no spaces between them, for example Chinese) has always been painful. We have to either type characters one by one and add spaces, or add spaces via an external text editor and paste the lyrics back by pressing Ctrl+V multiple times.
 

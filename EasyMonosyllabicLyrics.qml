@@ -34,6 +34,21 @@ MuseScore {
         lyricsInput.ensureActiveFocus();
     }
 
+    function doRevert() {
+        curScore.startCmd();
+        script.restorePreviousLyrics();
+        curScore.endCmd();
+        lyricsInput.currentText = "";
+        _quit();
+    }
+    function doConfirm() {
+        curScore.startCmd();
+        script.confirm();
+        curScore.endCmd();
+        lyricsInput.currentText = "";
+        _quit();
+    }
+
     width: 480 + 32
     height: 80 + 32
 
@@ -62,6 +77,16 @@ MuseScore {
                 curScore.endCmd();
 
                 reacquireFocus();
+            }
+
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Escape) {
+                    doRevert();
+                    event.accepted = true; // Prevent further processing
+                } else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
+                    doConfirm();
+                    event.accepted = true;
+                }
             }
         }
 
@@ -141,11 +166,7 @@ MuseScore {
             text: qsTr("Revert", "Action")
 
             onClicked: {
-                curScore.startCmd();
-                script.restorePreviousLyrics();
-                curScore.endCmd();
-                lyricsInput.currentText = "";
-                _quit();
+                doRevert();
             }
         }
 
@@ -169,11 +190,7 @@ MuseScore {
             text: qsTr("Done", "Action")
 
             onClicked: {
-                curScore.startCmd();
-                script.confirm();
-                curScore.endCmd();
-                lyricsInput.currentText = "";
-                _quit();
+                doConfirm();
             }
         }
     }
